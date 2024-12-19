@@ -1,9 +1,13 @@
 pipeline {
-    agent any
+    agent any  // This defines the agent on which the pipeline will run
     stages {
-        stage('Build') { 
+        stage('Build') {
             steps {
-                sh 'npm install' 
+                script {
+                    // Pull Docker image for Node.js and run it as a container to build the app
+                    sh 'docker pull node:14'  // Pull the Node.js Docker image
+                    sh 'docker run --rm -v $(pwd):/app -w /app node:14 npm install'  // Run the container and execute npm install
+                }
             }
         }
     }
